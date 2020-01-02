@@ -1,0 +1,26 @@
+### Get all books
+GET http://localhost:5000/books
+Accept: */*
+Cache-Control: no-cache
+
+### Get book by isbn
+GET http://localhost:5000/books/9932371000193
+Accept: */*
+Cache-Control: no-cache
+
+### Add a new book
+
+POST http://localhost:5000/books
+Accept: */*
+Cache-Control: no-cache
+Content-Type: application/json
+
+{
+  "name": "Harry Potter",
+  "price": 99.9,
+  "isbn": 1234567
+}
+
+###
+
+

@@ -21,6 +21,48 @@ Content-Type: application/json
   "isbn": 1234567
 }
 
+### Invalid POST request -1
+
+POST http://localhost:5000/books
+Accept: */*
+Cache-Control: no-cache
+Content-Type: application/json
+
+{
+  "name": "Harry Potter",
+  "price": 99.9,
+  "isbnx": 1234567
+}
+
+
+
+### Book Update PUT
+
+PUT http://localhost:5000/books/9780394800165
+Accept: */*
+Cache-Control: no-cache
+Content-Type: application/json
+
+{
+  "name": "ABC",
+  "price": 99.9
+}
+
 ###
 
+PATCH http://localhost:5000/books/9780394800165
+Accept: */*
+Cache-Control: no-cache
+Content-Type: application/json
 
+{
+  "price": 199.9
+}
+
+### Delete the book
+DELETE http://localhost:5000/books/9780394800165
+Accept: */*
+Cache-Control: no-cache
+Content-Type: application/json
+
+###

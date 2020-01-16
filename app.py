@@ -141,4 +141,84 @@ def add_book():
             "helpString": "Data passed in similar to this {'name': 'bookname', 'price': 7.99, 'isbn': 9780394800165 }"
         }
         response = Response(json.dumps(invalid_book_object_error_msg), status=400, mimetype='application/json')
-        return response;
+        return response
+
+
+def valid_put_request_data(request_data):
+    if "name" in request_data and "price" in request_data:
+        return True
+    else:
+        return False
+
+
+# PUT /books/{isbn}
+@app.route('/books/<int:isbn>', methods=['PUT'])
+def replace_book(isbn):
+    request_data = request.get_json()
+    if not valid_put_request_data(request_data):
+        invalid_book_object_error_msg = {
+            "error": "Invalid book object passed in request",
+            "helpString": "Data should be passed in similar to this {'name': 'bookname', 'price': 7.99 }"
+        }
+        response = Response(json.dumps(invalid_book_object_error_msg), status=400, mimetype='application/json')
+        return response
+
+    new_book = {
+        'name': request_data['name'],
+        'price': request_data['price'],
+        'isbn': isbn
+    }
+    i = 0
+    for book in books:
+        current_isbn = book["isbn"]
+        if current_isbn == isbn:
+            books[i] = new_book
+        i += 1
+    response = Response("", status=204)
+    return response
+
+
+def valid_patch_request_data(request_data):
+    if "name" in request_data or "price" in request_data:
+        return True
+    else:
+        return False
+
+
+@app.route('/books/<int:isbn>', methods=['PATCH'])
+def update_book(isbn):
+    request_data = request.get_json()
+    if not valid_patch_request_data(request_data):
+        invalid_book_object_error_msg = {
+            "error": "Invalid book object passed in request",
+            "helpString": "Data should be passed in similar to this {'name': 'bookname', 'price': 7.99 }"
+        }
+        response = Response(json.dumps(invalid_book_object_error_msg), status=400, mimetype='application/json')
+        return response
+    updated_book = {}
+    if "price" in request_data:
+        updated_book["price"] = request_data['price']
+    if "name" in request_data:
+        updated_book["name"] = request_data['name']
+    for book in books:
+        if book["isbn"] == isbn:
+            book.update(updated_book)
+    response = Response("", status=204)
+    response.headers['Location'] = "/books/" + str(isbn)
+    return response
+
+
+@app.route('/books/<int:isbn>', methods=['DELETE'])
+def delete_book(isbn):
+    i = 0;
+    for book in books:
+        if book["isbn"] == isbn:
+            books.pop(i)
+            response = Response("", status=204)
+            return response
+        i += 1
+    invalid_book_object_error_msg = {
+        "error": "Book with ISBN number provided not found, so unable to delete.",
+    }
+    response = Response(json.dumps(invalid_book_object_error_msg), status=404, mimetype='application/json')
+    return response

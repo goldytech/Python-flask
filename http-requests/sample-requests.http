@@ -4,7 +4,7 @@ Accept: */*
 Cache-Control: no-cache
 
 ### Get book by isbn
-GET http://localhost:5000/books/9932371000193
+GET http://localhost:5000/books/1234567
 Accept: */*
 Cache-Control: no-cache
 
@@ -38,7 +38,7 @@ Content-Type: application/json
 
 ### Book Update PUT
 
-PUT http://localhost:5000/books/9780394800165
+PUT http://localhost:5000/books/1234567
 Accept: */*
 Cache-Control: no-cache
 Content-Type: application/json
@@ -50,7 +50,7 @@ Content-Type: application/json
 
 ###
 
-PATCH http://localhost:5000/books/9780394800165
+PATCH http://localhost:5000/books/1234567
 Accept: */*
 Cache-Control: no-cache
 Content-Type: application/json
@@ -60,7 +60,7 @@ Content-Type: application/json
 }
 
 ### Delete the book
-DELETE http://localhost:5000/books/9780394800165
+DELETE http://localhost:5000/books/1234567
 Accept: */*
 Cache-Control: no-cache
 Content-Type: application/json

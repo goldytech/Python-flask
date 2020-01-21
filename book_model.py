@@ -39,6 +39,8 @@ class Book(db.Model):
 
     def get_book(_isbn):
         book_to_be_retrieved = Book.query.filter_by(isbn=_isbn).first()
+        if book_to_be_retrieved is None:
+            return {}
         return Book.json(book_to_be_retrieved)
 
     def delete_book(_isbn):

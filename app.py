@@ -1,21 +1,57 @@
+from datetime import datetime, timedelta
 import json
 
 from flask import Flask, jsonify, request, Response
 from book_model import *
 
 from settings import *
+import jwt
+from functools import wraps
 
+
+@app.route('/login', methods=['POST'])
+def get_token():
+    request_data = request.get_json()
+    if "username" in request_data and "password" in request_data:
+        # todo validate credentials
+        expiration_date = datetime.utcnow() + timedelta(seconds=1200)
+        issued_at = datetime.utcnow()
+        payload = {
+            'exp': expiration_date,
+            'iat': issued_at,
+            'sub': request_data['username']
+        }
+
+    token = jwt.encode(payload, app.config['JWT_KEY'], algorithm='HS256')
+    return token
+
+
+def token_required(f):
+    @wraps(f)
+    def wrapper(*args, **kwargs):
+        token = request.headers['Authorization']
+        try:
+            jwt.decode(token, app.config['JWT_KEY'])
+            return f(*args, **kwargs)
+        except jwt.ExpiredSignature:
+            return jsonify({'error': 'Token is expired'}), 401
+        except jwt.InvalidTokenError:
+            return jsonify({'error': 'Invalid token'}), 401
+
+    return wrapper
 
 
 @app.route('/books')
+@token_required
 def get_books():
     return jsonify({'books': Book.get_all_books()})
 
 
 @app.route('/books/<int:isbn>')
+@token_required
 def get_book_by_isbn(isbn):
     return_value = Book.get_book(isbn)
-    if return_value is None:
+    if return_value == {}:
         invalid_book_object_error_msg = {
             "error": f"Book with ISBN number {isbn} not found."
         }

@@ -2,12 +2,13 @@
 GET http://localhost:5000/books
 Accept: */*
 Cache-Control: no-cache
+Authorization: eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE1Nzk1OTA0OTgsImlhdCI6MTU3OTU4OTI5OCwic3ViIjoiYWZ6YWwifQ.tsB9sFqqkQpgk3yZg-7fY5kJhf9MKDjo_pruggwfjOY
 
 ### Get book by isbn
-GET http://localhost:5000/books/1234567
+GET http://localhost:5000/books/12346
 Accept: */*
 Cache-Control: no-cache
-
+Authorization: eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE1Nzk1OTA0OTgsImlhdCI6MTU3OTU4OTI5OCwic3ViIjoiYWZ6YWwifQ.tsB9sFqqkQpgk3yZg-7fY5kJhf9MKDjo_pruggwfjOY
 ### Add a new book
 
 POST http://localhost:5000/books
@@ -64,5 +65,16 @@ DELETE http://localhost:5000/books/1234567
 Accept: */*
 Cache-Control: no-cache
 Content-Type: application/json
+
+### Login
+POST http://localhost:5000/login
+Accept: */*
+Cache-Control: no-cache
+Content-Type: application/json
+
+{
+  "username": "afzal",
+  "password": "pwdtest"
+}
 
 ###
